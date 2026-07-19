@@ -45,6 +45,40 @@ it. The fumble *is* the finding.
 
 ---
 
+## Grading authority — where the UX judgement comes from
+
+A usability verdict is only as trustworthy as the standard it's measured
+against. Don't grade UX from vibes. Ground every judgement in an authoritative
+rubric, in this order of preference:
+
+1. **`ui-ux-pro-max`** (if installed) — invoke it for the grading pass. It
+   carries a deep UX guideline set (layout, hierarchy, color, typography,
+   interaction, accessibility, motion) that is far richer than any checklist
+   this skill could restate, and it stays current as design practice evolves.
+   Use it as the primary yardstick for readability, hierarchy, interaction, and
+   visual quality.
+2. **`saas-design`** (if installed) — invoke it when the target is a SaaS /
+   web-app UI, as the authority on the visual language (spacing, restraint,
+   type, "does this read as intentional or templated"). It complements
+   `ui-ux-pro-max`: `ui-ux-pro-max` judges the interaction, `saas-design` judges
+   the craft.
+3. **`references/ux-rubric.md`** (always present) — the bundled fallback. It's a
+   distilled dimension checklist so the skill still produces a grounded report
+   for anyone who doesn't have the design skills installed. When the skills above
+   *are* available, use this only as a coverage backstop, not the primary source.
+
+So the honest hierarchy is: **delegate to the real design skills; the bundled
+rubric is the safety net, not the standard.** If you find yourself calling UX
+"strong" without having consulted at least one authority above, stop — that's an
+ungrounded verdict.
+
+For runtime depth (console errors, network, performance under load), the
+`sdlc:browser-testing-with-devtools` skill and `web-performance-auditor` persona
+are the authorities — reach for them when a finding needs hard runtime evidence
+rather than observed behaviour.
+
+---
+
 ## Workflow
 
 ### Phase 0 — Scope, ground, and get the go-ahead
@@ -145,9 +179,13 @@ whole (this is the part product owners care about most):
 - Where should those entry points live (which existing screens/documents should
   offer an action that lands the user here, in context)?
 - Would the persona come back next week? Why / why not?
-- Consult `references/ux-rubric.md` for the detailed dimension checklist
-  (usability, readability, flow, interaction, animation) to make sure nothing's
-  missed.
+
+Grade each dimension against the **grading authority** (see that section above):
+invoke `ui-ux-pro-max` — and `saas-design` for web/SaaS UI — as the primary
+yardstick for usability, readability, hierarchy, interaction, and motion, and
+fall back to `references/ux-rubric.md` when those skills aren't installed. Every
+severity rating should trace to a named guideline or an observed user failure,
+never to unsupported taste.
 
 ### Phase 4 — Report
 

@@ -1,8 +1,15 @@
-# UX Rubric — dimension checklist
+# UX Rubric — dimension checklist (bundled fallback)
 
-Read this in Phase 3 to grade each dimension so nothing slips through. These are
-prompts for judgement, not a scorecard to fill mechanically. For each, note what
-you observed with concrete evidence, then map issues to a severity.
+**This is the safety net, not the standard.** When `ui-ux-pro-max` and/or
+`saas-design` are installed, they are the primary grading authority (see the
+"Grading authority" section in SKILL.md) — invoke them and use this file only as
+a coverage backstop so nothing slips through. This distilled checklist exists so
+the skill still produces a grounded report for anyone who downloaded it without
+those design skills installed.
+
+Read this in Phase 3 to grade each dimension. These are prompts for judgement,
+not a scorecard to fill mechanically. For each, note what you observed with
+concrete evidence, then map issues to a severity.
 
 ## 1. Usability (can they do the job?)
 - Does the primary task complete without the user needing to be taught?
