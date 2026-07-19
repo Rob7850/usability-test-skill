@@ -69,10 +69,22 @@ test cases for your sign-off, then run them and write the report.
 7. Open product questions   ← the calls only a product owner can make
 ```
 
+## Self-contained — no other skills required
+
+This is one complete package. It carries its own UX evaluation authority, visual
+craft lens, test-case method, and browser-driving guide, so it works on a fresh
+machine with nothing else installed. The only external requirement is the
+Claude-in-Chrome browser extension (a skill file can't ship a browser
+extension) — and the skill explains a fallback if it isn't connected.
+
 ## Files
 
-- `SKILL.md` — the methodology Claude follows.
-- `references/ux-rubric.md` — the detailed dimension checklist used when grading.
+- `SKILL.md` — the six-phase methodology Claude follows.
+- `references/ux-evaluation-guidelines.md` — the grading authority: 18 UX
+  categories, ~99 checks with severities.
+- `references/visual-craft.md` — the "intentional vs. templated" visual-quality lens.
+- `references/writing-test-cases.md` — how the task-based cases are authored.
+- `references/browser-driving.md` — how the flow is driven live in Chrome.
 
 ## License
 

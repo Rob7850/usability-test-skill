@@ -1,6 +1,6 @@
 ---
 name: usability-test
-description: "Run a real user-research pass on a live flow, screen, or module in the browser — acting as an end user, not a developer. Use when the user wants to usability-test a feature, do user research, validate a flow end-to-end, understand what value a screen provides, or asks 'test this as a user', 'run a usability test', 'is this flow good', 'what's the UX like', 'do user testing on X'. Produces task-based test cases (10–15), drives them live in Chrome, and returns a severity-rated UX report with a prioritized fix list AND a strategic value assessment (reason-to-visit, stickiness, missing entry points) — not just a holistic critique."
+description: "Run a complete user-research pass on a live flow, screen, or module in the browser — acting as an end user, not a developer. Use when the user wants to usability-test a feature, do user research, validate a flow end-to-end, understand what value a screen provides, or asks 'test this as a user', 'run a usability test', 'is this flow good', 'what's the UX like', 'do user testing on X'. This is a SELF-CONTAINED package: it carries its own UX evaluation guidelines, visual-craft lens, test-case method, and browser-driving guide — it needs no other skill installed. Produces 10–15 task-based test cases, drives them live in Chrome, and returns a severity-rated UX report with a prioritized fix list AND a strategic value assessment (reason-to-visit, stickiness, missing entry points)."
 user-invocable: true
 ---
 
@@ -18,26 +18,40 @@ The output is two things at once:
    second layer is the one product owners actually lose sleep over, so it is a
    first-class part of every run, never an afterthought.
 
----
+## This is a self-contained package
 
-## The mindset that makes this skill work
+Everything needed to run a full usability test is **bundled in `references/`** —
+you do not need `ui-ux-pro-max`, `saas-design`, an SDLC skill, or any other skill
+installed. Read the bundled file at the phase noted below:
 
-The trap in UX evaluation is grading the screen you're looking at ("nice
-layout, good contrast") instead of the *user's day*. Fight that. Two lenses run
-the whole way through:
+| File | What it carries | Read it in |
+|---|---|---|
+| `references/writing-test-cases.md` | How to author task-based cases + the 8 categories | Design phase |
+| `references/browser-driving.md` | How to drive the flow in Chrome as the user | Execute phase |
+| `references/ux-evaluation-guidelines.md` | **The grading authority** — 18 UX categories, ~99 checks with severities | Evaluate phase |
+| `references/visual-craft.md` | The "intentional vs. templated" lens for visual quality | Evaluate phase |
 
-- **Use-case-first.** Frame one is the "wow" — the thing loads and looks
-  impressive. Frame two is the real test: **"okay, what do I actually do here?"**
-  If a user can't answer that in a few seconds, the screen has failed regardless
-  of how good it looks. Every test case must probe frame two, not frame one.
+The only thing a skill file can't ship is the **Claude-in-Chrome browser
+extension** (it exposes the `mcp__claude-in-chrome__*` tools). If it isn't
+connected, `references/browser-driving.md` explains the fallback.
 
+## The mindset that makes this work
+
+The trap in UX evaluation is grading the screen in front of you ("nice layout,
+good contrast") instead of the *user's day*. Fight that. Two lenses run the whole
+way through — they outrank any single checklist item:
+
+- **Use-case-first.** Frame one is the "wow" — it loads and looks impressive.
+  Frame two is the real test: **"okay, what do I actually do here?"** If a user
+  can't answer that in a few seconds, the screen has failed regardless of how
+  good it looks.
 - **Reason-to-visit.** For each screen ask: *what does this give me that I can't
   already get somewhere I already go?* If the honest answer is "a prettier view
-  of data I can see elsewhere," that's the single most important finding in the
-  report — because it predicts the module gets built, demoed, and then never
-  opened again. Look actively for the unique value, and for the **entry points**
-  that would pull users in from the tools they already live in (e.g. a "see all
-  connections" action on a document detail page that lands them here in context).
+  of data I can see elsewhere," that's the single most important finding — it
+  predicts the module gets built, demoed, and then never opened again. Look
+  actively for the unique value, and for the **entry points** that would pull
+  users in from the tools they already live in (e.g. a "see all connections"
+  action on a document detail page that lands them here in context).
 
 Behave like the persona, not like someone who built the thing. Don't use inside
 knowledge to shortcut a task — if a real user would fumble, fumble, and record
@@ -45,151 +59,73 @@ it. The fumble *is* the finding.
 
 ---
 
-## Grading authority — where the UX judgement comes from
+## Workflow — the usability-testing lifecycle
 
-A usability verdict is only as trustworthy as the standard it's measured
-against. Don't grade UX from vibes. Ground every judgement in an authoritative
-rubric, in this order of preference:
+Six phases. Don't skip the sign-off checkpoints — they're where the test earns
+the operator's trust.
 
-1. **`ui-ux-pro-max`** (if installed) — invoke it for the grading pass. It
-   carries a deep UX guideline set (layout, hierarchy, color, typography,
-   interaction, accessibility, motion) that is far richer than any checklist
-   this skill could restate, and it stays current as design practice evolves.
-   Use it as the primary yardstick for readability, hierarchy, interaction, and
-   visual quality.
-2. **`saas-design`** (if installed) — invoke it when the target is a SaaS /
-   web-app UI, as the authority on the visual language (spacing, restraint,
-   type, "does this read as intentional or templated"). It complements
-   `ui-ux-pro-max`: `ui-ux-pro-max` judges the interaction, `saas-design` judges
-   the craft.
-3. **`references/ux-rubric.md`** (always present) — the bundled fallback. It's a
-   distilled dimension checklist so the skill still produces a grounded report
-   for anyone who doesn't have the design skills installed. When the skills above
-   *are* available, use this only as a coverage backstop, not the primary source.
+### Phase 1 — Scope & plan
 
-So the honest hierarchy is: **delegate to the real design skills; the bundled
-rubric is the safety net, not the standard.** If you find yourself calling UX
-"strong" without having consulted at least one authority above, stop — that's an
-ungrounded verdict.
-
-For runtime depth (console errors, network, performance under load), the
-`sdlc:browser-testing-with-devtools` skill and `web-performance-auditor` persona
-are the authorities — reach for them when a finding needs hard runtime evidence
-rather than observed behaviour.
-
----
-
-## Workflow
-
-### Phase 0 — Scope, ground, and get the go-ahead
-
-Do not open the browser yet. First:
+Do not open the browser yet.
 
 1. **Pin the target.** Confirm the exact flow/module, its URL, the login/tenant
-   to use, and — critically — **the user's value hypothesis**: what do *they*
-   think this is for and who is it for? Their answer becomes the yardstick you
-   test against. If they haven't said, ask.
-
-2. **Pick personas.** 1–3 realistic roles who would (or should) use this, each
-   with a concrete goal ("AP analyst chasing why an invoice is on hold",
-   "procurement lead vetting a new vendor"). Real jobs, not "a user".
-
-3. **Ground yourself in the intended value.** Read the relevant code / config /
-   docs so the tests are grounded, not guessed — what the screen is *supposed*
-   to do, what data it shows, what actions exist, what it links to. This is the
-   one place you use developer knowledge: to design fair tests. You drop it the
-   moment testing starts.
-
+   to use, and — critically — **the value hypothesis**: what does the owner think
+   this is for and who is it for? Their answer becomes the yardstick. If unstated,
+   ask.
+2. **Pick personas.** 1–3 realistic roles with concrete goals (see
+   `references/writing-test-cases.md` → Personas).
+3. **Ground yourself.** Read the relevant code / config / docs so tests reflect
+   what the screen actually does — the one place developer knowledge is used, and
+   dropped the moment testing starts.
 4. **Confirm the stack is up and get explicit browser permission.** State which
-   dev stack must be running and ask the user to confirm it's live. Then **ask
-   for explicit go-ahead before launching Chrome** — never open the browser
-   without a clear yes in this session. (If Chrome tools are deferred, load them
-   with a single `ToolSearch` batch: `tabs_context_mcp, navigate, computer,
-   read_page, tabs_create_mcp, gif_creator`, plus `read_console_messages` if you
-   expect to debug.)
+   dev stack must be running and ask the operator to confirm it's live. Then
+   **ask for an explicit go-ahead before launching Chrome** — never open the
+   browser without a clear yes in this session.
 
-### Phase 1 — Design the test cases (10–15, task-based)
+### Phase 2 — Design the test cases (10–15)
 
-Write **10–15** task-based cases — a real user goal, not a click instruction.
-"Verify the vendor spend total is legible" is a checkpoint; **"You're an AP
-analyst who just got asked why Acme's spend jumped — find out"** is a task. Tasks
-surface the flow; checkpoints only confirm a pixel.
+Read `references/writing-test-cases.md` and write **10–15 task-based cases** — a
+real user goal, not a click script — with deliberate coverage across the 8
+categories (orientation/frame-two, core jobs, discovery, reason-to-visit,
+data-scale, edge states, readability, interaction).
 
-Cover these categories deliberately so breadth is designed, not accidental.
-Aim for coverage across all of them; weight toward whichever matters most for
-this flow:
+**Show the full list to the operator and wait for sign-off before running.** They
+routinely add the best case in the set.
 
-| # | Category | The question it probes |
-|---|----------|------------------------|
-| 1 | **Orientation / frame-two** | Land cold — in seconds, do I know what this is and what to do? |
-| 2 | **Core jobs-to-be-done** | Can the persona complete their primary task, start to finish? |
-| 3 | **Discovery & navigation** | Can I find things? Any dead ends? Can I always get back? |
-| 4 | **Reason-to-visit & value** | Does this give me something unique? Would I return? Where would I *enter* from? |
-| 5 | **Data scale & honesty** | With realistic data volume, does it still work — or does it cap/hide what I asked to see whole? |
-| 6 | **Empty / edge / error states** | No data, one record, broken record, huge record — graceful? |
-| 7 | **Readability & hierarchy** | Can I scan it? Is the most important thing the most prominent? |
-| 8 | **Interaction & motion** | Do clicks/hovers/animations aid understanding or just decorate / distract / lag? |
+### Phase 3 — Execute (run each case as the user)
 
-Each test case is written as:
+Read `references/browser-driving.md`. Drive the flow live. For every case:
+perform the task the way the persona would, narrate the lived experience, capture
+screenshots + a GIF of anything multi-step, and record the outcome against
+**Success** plus anything off-script (a lag, a mislabel, a "wait, where am I?").
+Watch the two lenses continuously.
 
-```
-TC-<n> · <category> · <persona>
-Goal:      <what the persona is trying to achieve, in their words>
-Steps:     <the path a real user would take — high level, not scripted clicks>
-Success:   <the observable outcome that means they succeeded>
-Probes:    <the specific usability/value question this case answers>
-```
+### Phase 4 — Evaluate & grade
 
-**Show the full test-case list to the user before running.** This is a natural
-checkpoint — they'll often add a scenario you'd never guess. Wait for their nod.
+Grade every finding against the **bundled authority**:
+`references/ux-evaluation-guidelines.md` (the 18 categories / ~99 checks) for
+usability, accessibility, readability, interaction, and motion; and
+`references/visual-craft.md` for visual quality. **Every severity rating should
+trace to a named guideline or an observed user failure — never to unsupported
+taste.**
 
-### Phase 2 — Run each case as the user
-
-Drive the flow live. For every case:
-
-- Perform the task the way the persona would. Narrate the lived experience as you
-  go: where you looked first, what you expected, where you hesitated, what
-  confused you, what delighted you.
-- **Capture evidence** — screenshots at key moments, and a GIF for any multi-step
-  flow worth showing back. Name files by what they show.
-- Record the outcome against **Success**, and note anything off-script (a lag, a
-  mislabel, a moment of "wait, where am I?").
-- Watch for the two lenses continuously: did frame-two land? did you find a
-  reason to come back / an entry point that's missing?
-
-If the browser genuinely blocks (2–3 failed attempts, no response, a dialog),
-stop and report what you tried — don't loop.
-
-### Phase 3 — Grade & analyse
-
-For each finding assign a **severity**, so the fix list is triageable rather than
-a flat wall of notes:
-
+Assign each finding a severity so the fix list is triageable:
 - **Blocker** — user cannot complete the task, or would leave.
 - **Major** — completes but with real friction, confusion, or wrong mental model.
 - **Minor** — noticeable rough edge, low cost to the user.
 - **Polish** — refinement; nice-to-have.
 
-Then step back and answer the **strategic value questions** for the flow as a
-whole (this is the part product owners care about most):
-
-- What is the genuine, unique value here vs. what users can already get elsewhere?
-- What's the *reason to visit* — and is it strong enough that people will come
-  unprompted, or does it need entry points pushed from other modules?
+Then answer the **strategic value questions** for the flow as a whole:
+- What is the genuine, unique value here vs. what users get elsewhere?
+- What's the reason-to-visit — strong enough that people come unprompted, or does
+  it need entry points pushed from other modules?
 - Where should those entry points live (which existing screens/documents should
   offer an action that lands the user here, in context)?
-- Would the persona come back next week? Why / why not?
+- Would each persona come back next week? Why / why not?
 
-Grade each dimension against the **grading authority** (see that section above):
-invoke `ui-ux-pro-max` — and `saas-design` for web/SaaS UI — as the primary
-yardstick for usability, readability, hierarchy, interaction, and motion, and
-fall back to `references/ux-rubric.md` when those skills aren't installed. Every
-severity rating should trace to a named guideline or an observed user failure,
-never to unsupported taste.
+### Phase 5 — Report
 
-### Phase 4 — Report
-
-Write the report to a markdown file (default: the scratchpad or, if the user
+Write the report to a markdown file (default: the scratchpad or, if the operator
 keeps research docs outside the repo, their docs folder — ask if unsure; never
 commit it into a code repo unprompted). Use this structure exactly:
 
@@ -212,7 +148,7 @@ real reason to visit? Lead with the single most important takeaway.>
 
 ## 4. Findings
 Table: id · severity · category · what happened · why it matters · evidence
-(sorted Blocker → Polish)
+(sorted Blocker → Polish; each severity traceable to a guideline or a failure)
 
 ## 5. What's working (keep these)
 <the genuinely good things — so they don't get refactored away>
@@ -226,21 +162,30 @@ rough effort. Separate quick wins from bigger bets.
 surfaced that need a human call>
 ```
 
-Offer to also render the report as a shareable Artifact if the user wants a
-visual version, but the markdown file is the source of truth.
+### Phase 6 — Close
+
+Offer to render the report as a shareable Artifact if the operator wants a visual
+version (the markdown file stays the source of truth), and confirm any
+follow-ups. Note anything that couldn't be tested (a blocked path, missing data,
+the extension being unavailable) so the coverage is honest.
 
 ---
 
 ## Guardrails
 
+- **Self-contained by design.** Grade against the bundled `references/`, not
+  against skills that may not be installed. Don't tell the operator to install
+  anything except (if needed) the Claude-in-Chrome extension.
 - **Never open the browser without an explicit yes this session.** The stack must
   be running; ask, don't assume.
-- **Test as the user, not the builder.** Drop developer knowledge once Phase 2
+- **Test as the user, not the builder.** Drop developer knowledge once Phase 3
   starts — a shortcut only you know about hides a real user's dead end.
-- **Don't grade the screen — grade the user's day.** A pretty screen nobody has
-  a reason to open is a finding, not a pass.
+- **Don't grade the screen — grade the user's day.** A pretty screen nobody has a
+  reason to open is a finding, not a pass.
 - **Never cap what the user asked to see whole.** If a task is "see all of X" and
   the UI silently shows 30 of 500, that's a Major finding, not a detail.
+- **Every verdict is grounded.** "UX is strong" is only earned once it's checked
+  against the bundled guidelines — never from taste alone.
 - **Be honest about weak value.** The most useful thing this skill can say is
   "this is lovely and I'm not sure anyone will come here — here's how to fix
   that." Say it plainly.
